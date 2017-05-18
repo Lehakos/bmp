@@ -1,4 +1,5 @@
 import { injectGlobal } from 'styled-components';
+import { fonts } from 'utils/style';
 
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
@@ -13,7 +14,7 @@ injectGlobal`
   }
 
   body.fontLoaded {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: ${fonts.first};
   }
 
   #app {
