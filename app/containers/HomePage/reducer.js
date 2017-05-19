@@ -11,6 +11,9 @@ import {
   LOAD_DATA_FAILURE,
   CHANGE_FILTER,
   SEARCH,
+  OPEN_MODAL,
+  CLOSE_MODAL,
+  ADD_ENTRY_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -19,6 +22,7 @@ const initialState = fromJS({
   loading: true,
   error: null,
   searchQuery: '',
+  modal: null,
 });
 
 function homePageReducer(state = initialState, action) {
@@ -45,6 +49,15 @@ function homePageReducer(state = initialState, action) {
 
     case SEARCH:
       return state.set('searchQuery', payload.query.toLowerCase());
+
+    case OPEN_MODAL:
+      return state.set('modal', payload.modal);
+
+    case CLOSE_MODAL:
+      return state.set('modal', null);
+
+    case ADD_ENTRY_SUCCESS:
+      return state.update('data', (data) => data.unshift(fromJS(payload)));
 
     default:
       return state;

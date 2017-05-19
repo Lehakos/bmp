@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import union from 'lodash/union';
 
 /**
  * Direct selector to the homePage state domain
@@ -49,6 +50,11 @@ const makeTableData = () => createSelector(
   }
 );
 
+const makeCities = () => createSelector(
+  selectTableData,
+  (data) => union(data.toJS().map((item) => item.city))
+);
+
 /**
  * Default selector used by HomePage
  */
@@ -62,4 +68,5 @@ export default makeSelectHomePage;
 export {
   selectHomePageDomain,
   makeTableData,
+  makeCities,
 };

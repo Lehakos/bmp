@@ -13,19 +13,40 @@ import Table from 'components/Table';
 import Select from 'components/Select';
 import TextField from 'material-ui/TextField';
 
-import makeSelectHomePage, { makeTableData } from './selectors';
+import NewEntryModal from './NewEntryModal';
+import makeSelectHomePage, {
+  makeTableData,
+  makeCities,
+} from './selectors';
 import { tableHeaders, countryFilters } from './constants';
-import { loadData, changeFilter, search } from './actions';
-import { Header } from './style';
+import {
+  loadData,
+  changeFilter,
+  search,
+  closeModal,
+  openModal,
+  addEntry,
+} from './actions';
+import { Header, StyledButton } from './style';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+
+    this.openNewEntryModal = ::this.openNewEntryModal;
+  }
+
   componentDidMount() {
     this.props.loadData();
   }
 
+  openNewEntryModal() {
+    this.props.openModal('newEntry');
+  }
+
   render() {
-    const { tableData } = this.props;
-    const { filter, searchQuery } = this.props.homePage;
+    const { tableData, cities } = this.props;
+    const { filter, searchQuery, modal } = this.props.homePage;
 
     return (
       <div>
@@ -44,11 +65,23 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             value={searchQuery}
             onChange={this.props.search}
           />
+          <StyledButton
+            label="Добавить новую запись"
+            onClick={this.openNewEntryModal}
+            primary
+          />
         </Header>
         <Table
           sortable
           body={tableData}
           header={tableHeaders}
+        />
+        <NewEntryModal
+          isOpen={modal === 'newEntry'}
+          onRequestClose={this.props.closeModal}
+          cities={cities}
+          countries={countryFilters.slice(1)}
+          onSubmit={this.props.addEntry}
         />
       </div>
     );
@@ -56,9 +89,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 }
 
 HomePage.propTypes = {
+  addEntry: PropTypes.func,
+  cities: PropTypes.arrayOf(PropTypes.string),
+  changeFilter: PropTypes.func,
+  closeModal: PropTypes.func,
   homePage: PropTypes.object,
   loadData: PropTypes.func,
-  changeFilter: PropTypes.func,
+  openModal: PropTypes.func,
   search: PropTypes.func,
   tableData: PropTypes.array,
 };
@@ -66,12 +103,16 @@ HomePage.propTypes = {
 const mapStateToProps = createStructuredSelector({
   homePage: makeSelectHomePage(),
   tableData: makeTableData(),
+  cities: makeCities(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadData: () => dispatch(loadData()),
   changeFilter: (e, ind, value) => dispatch(changeFilter(value)),
+  closeModal: () => dispatch(closeModal()),
+  loadData: () => dispatch(loadData()),
+  openModal: (modal) => dispatch(openModal(modal)),
   search: (e, value) => dispatch(search(value)),
+  addEntry: (data) => dispatch(addEntry(data.toJS())),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

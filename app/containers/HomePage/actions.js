@@ -10,6 +10,11 @@ import {
   LOAD_DATA_FAILURE,
   CHANGE_FILTER,
   SEARCH,
+  OPEN_MODAL,
+  CLOSE_MODAL,
+  ADD_ENTRY,
+  ADD_ENTRY_SUCCESS,
+  ADD_ENTRY_FAILURE,
 } from './constants';
 
 export function loadData() {
@@ -43,5 +48,39 @@ export function search(query) {
   return {
     type: SEARCH,
     payload: { query },
+  };
+}
+
+export function openModal(modal) {
+  return {
+    type: OPEN_MODAL,
+    payload: { modal },
+  };
+}
+
+export function closeModal() {
+  return {
+    type: CLOSE_MODAL,
+  };
+}
+
+export function addEntry(data) {
+  return {
+    type: ADD_ENTRY,
+    payload: data,
+  };
+}
+
+export function addEntrySuccess(data) {
+  return {
+    type: ADD_ENTRY_SUCCESS,
+    payload: data,
+  };
+}
+
+export function addEntryFailure(error) {
+  return {
+    type: ADD_ENTRY_FAILURE,
+    payload: { error },
   };
 }

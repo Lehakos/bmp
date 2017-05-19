@@ -78,6 +78,14 @@ class Table extends PureComponent { // eslint-disable-line react/prefer-stateles
 
   sortTable(data = this.state.data, cb) {
     const { sort: { index, direction } } = this.state;
+    if (index === null) {
+      this.setState({
+        data,
+      }, cb);
+
+      return;
+    }
+
     const newData = [...data].sort((row1, row2) => {
       const toDown = direction === 'down';
       const a = row1[index] === null ? '' : row1[index];

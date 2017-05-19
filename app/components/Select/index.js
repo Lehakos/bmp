@@ -19,12 +19,13 @@ function renderOption(option) {
   );
 }
 
-function Select({ options, value, onChange, label }) {
+function Select({ options, value, onChange, label, ...props }) {
   return (
     <SelectField
       floatingLabelText={label}
       value={value}
       onChange={onChange}
+      {...props}
     >
       {options.map(renderOption)}
     </SelectField>

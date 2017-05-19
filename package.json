@@ -233,11 +233,13 @@
     "react-router-scroll": "0.4.1",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "3.6.0",
+    "redux-form": "^6.7.0",
     "redux-immutable": "3.0.8",
     "redux-saga": "0.14.0",
     "reselect": "2.5.4",
     "sanitize.css": "4.1.0",
     "styled-components": "1.1.2",
+    "styled-tools": "^0.1.4",
     "warning": "3.0.0",
     "whatwg-fetch": "2.0.1"
   },
