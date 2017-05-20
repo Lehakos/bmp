@@ -15,6 +15,7 @@ import {
   ADD_ENTRY,
   ADD_ENTRY_SUCCESS,
   ADD_ENTRY_FAILURE,
+  CHANGE_PAGINATION,
 } from './constants';
 
 export function loadData() {
@@ -82,5 +83,12 @@ export function addEntryFailure(error) {
   return {
     type: ADD_ENTRY_FAILURE,
     payload: { error },
+  };
+}
+
+export function changePagination(pageNum) {
+  return {
+    type: CHANGE_PAGINATION,
+    payload: { pageNum },
   };
 }

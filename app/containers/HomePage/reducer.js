@@ -14,6 +14,7 @@ import {
   OPEN_MODAL,
   CLOSE_MODAL,
   ADD_ENTRY_SUCCESS,
+  CHANGE_PAGINATION,
 } from './constants';
 
 const initialState = fromJS({
@@ -23,6 +24,7 @@ const initialState = fromJS({
   error: null,
   searchQuery: '',
   modal: null,
+  currentPage: 1,
 });
 
 function homePageReducer(state = initialState, action) {
@@ -45,10 +47,14 @@ function homePageReducer(state = initialState, action) {
         .set('error', payload.error);
 
     case CHANGE_FILTER:
-      return state.set('filter', payload.value.toLowerCase());
+      return state
+        .set('filter', payload.value.toLowerCase())
+        .set('currentPage', 1);
 
     case SEARCH:
-      return state.set('searchQuery', payload.query.toLowerCase());
+      return state
+        .set('searchQuery', payload.query.toLowerCase())
+        .set('currentPage', 1);
 
     case OPEN_MODAL:
       return state.set('modal', payload.modal);
@@ -58,6 +64,9 @@ function homePageReducer(state = initialState, action) {
 
     case ADD_ENTRY_SUCCESS:
       return state.update('data', (data) => data.unshift(fromJS(payload)));
+
+    case CHANGE_PAGINATION:
+      return state.set('currentPage', payload.pageNum);
 
     default:
       return state;

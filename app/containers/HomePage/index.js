@@ -12,13 +12,15 @@ import { createStructuredSelector } from 'reselect';
 import Table from 'components/Table';
 import Select from 'components/Select';
 import TextField from 'material-ui/TextField';
+import Pagination from 'material-ui-pagination';
 
 import NewEntryModal from './NewEntryModal';
 import makeSelectHomePage, {
-  makeTableData,
+  makeCurrentPageData,
+  makeTotalPages,
   makeCities,
 } from './selectors';
-import { tableHeaders, countryFilters } from './constants';
+import { tableHeaders, countryFilters, PAGE_SIZE } from './constants';
 import {
   loadData,
   changeFilter,
@@ -26,8 +28,9 @@ import {
   closeModal,
   openModal,
   addEntry,
+  changePagination,
 } from './actions';
-import { Header, StyledButton } from './style';
+import { Header, StyledButton, Footer } from './style';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -45,8 +48,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
   render() {
-    const { tableData, cities } = this.props;
-    const { filter, searchQuery, modal } = this.props.homePage;
+    const { tableData, totalPages, cities } = this.props;
+    const { filter, searchQuery, modal, currentPage } = this.props.homePage;
 
     return (
       <div>
@@ -76,6 +79,19 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           body={tableData}
           header={tableHeaders}
         />
+        <Footer>
+          {
+            totalPages > 1 &&
+            (
+              <Pagination
+                display={PAGE_SIZE}
+                total={totalPages}
+                current={currentPage}
+                onChange={this.props.changePagination}
+              />
+            )
+          }
+        </Footer>
         <NewEntryModal
           isOpen={modal === 'newEntry'}
           onRequestClose={this.props.closeModal}
@@ -92,6 +108,7 @@ HomePage.propTypes = {
   addEntry: PropTypes.func,
   cities: PropTypes.arrayOf(PropTypes.string),
   changeFilter: PropTypes.func,
+  changePagination: PropTypes.func,
   closeModal: PropTypes.func,
   homePage: PropTypes.object,
   loadData: PropTypes.func,
@@ -102,7 +119,8 @@ HomePage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   homePage: makeSelectHomePage(),
-  tableData: makeTableData(),
+  tableData: makeCurrentPageData(),
+  totalPages: makeTotalPages(),
   cities: makeCities(),
 });
 
@@ -113,6 +131,7 @@ const mapDispatchToProps = (dispatch) => ({
   openModal: (modal) => dispatch(openModal(modal)),
   search: (e, value) => dispatch(search(value)),
   addEntry: (data) => dispatch(addEntry(data.toJS())),
+  changePagination: (pageNum) => dispatch(changePagination(pageNum)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

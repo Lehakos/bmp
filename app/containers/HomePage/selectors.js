@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import union from 'lodash/union';
+import { PAGE_SIZE } from './constants';
 
 /**
  * Direct selector to the homePage state domain
@@ -24,7 +25,12 @@ const selectSearchQuery = createSelector(
   (state) => state.get('searchQuery')
 );
 
-const makeTableData = () => createSelector(
+const selectPage = createSelector(
+  selectHomePageDomain(),
+  (state) => state.get('currentPage')
+);
+
+const selectFilteredData = createSelector(
   [selectTableData, selectFilter, selectSearchQuery],
   (dataImmutable, filter, query) => {
     let data = dataImmutable.toJS();
@@ -50,6 +56,24 @@ const makeTableData = () => createSelector(
   }
 );
 
+const makeCurrentPageData = () => createSelector(
+  [selectFilteredData, selectPage],
+  (data, currentPage) => {
+    const startInd = (currentPage - 1) * PAGE_SIZE;
+    const endInd = startInd + PAGE_SIZE;
+
+    return data.slice(startInd, endInd);
+  }
+);
+
+const makeTotalPages = () => createSelector(
+  [selectFilteredData],
+  (data) => {
+    console.log(Math.ceil(data.length / PAGE_SIZE));
+    return Math.ceil(data.length / PAGE_SIZE);
+  }
+);
+
 const makeCities = () => createSelector(
   selectTableData,
   (data) => union(data.toJS().map((item) => item.city))
@@ -67,6 +91,7 @@ const makeSelectHomePage = () => createSelector(
 export default makeSelectHomePage;
 export {
   selectHomePageDomain,
-  makeTableData,
+  makeCurrentPageData,
+  makeTotalPages,
   makeCities,
 };

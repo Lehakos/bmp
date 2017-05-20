@@ -14,6 +14,9 @@ export const CLOSE_MODAL = 'app/HomePage/CLOSE_MODAL';
 export const ADD_ENTRY = 'app/HomePage/ADD_ENTRY';
 export const ADD_ENTRY_SUCCESS = 'app/HomePage/ADD_ENTRY_SUCCESS';
 export const ADD_ENTRY_FAILURE = 'app/HomePage/ADD_ENTRY_FAILURE';
+export const CHANGE_PAGINATION = 'app/HomePage/CHANGE_PAGINATION';
+
+export const PAGE_SIZE = 8;
 
 export const tableHeaders = [
   'Название',
