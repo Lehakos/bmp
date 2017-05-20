@@ -115,6 +115,7 @@ HomePage.propTypes = {
   openModal: PropTypes.func,
   search: PropTypes.func,
   tableData: PropTypes.array,
+  totalPages: PropTypes.number,
 };
 
 const mapStateToProps = createStructuredSelector({

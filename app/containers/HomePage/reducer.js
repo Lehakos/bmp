@@ -17,7 +17,7 @@ import {
   CHANGE_PAGINATION,
 } from './constants';
 
-const initialState = fromJS({
+export const initialState = fromJS({
   data: [],
   filter: 'все',
   loading: true,

@@ -68,10 +68,7 @@ const makeCurrentPageData = () => createSelector(
 
 const makeTotalPages = () => createSelector(
   [selectFilteredData],
-  (data) => {
-    console.log(Math.ceil(data.length / PAGE_SIZE));
-    return Math.ceil(data.length / PAGE_SIZE);
-  }
+  (data) => Math.ceil(data.length / PAGE_SIZE)
 );
 
 const makeCities = () => createSelector(

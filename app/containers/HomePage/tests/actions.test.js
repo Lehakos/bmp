@@ -1,18 +1,18 @@
 
 import {
-  defaultAction,
+  loadData,
 } from '../actions';
 import {
-  DEFAULT_ACTION,
+  LOAD_DATA,
 } from '../constants';
 
 describe('HomePage actions', () => {
-  describe('Default Action', () => {
-    it('has a type of DEFAULT_ACTION', () => {
+  describe('Load data', () => {
+    it(`has a type of ${LOAD_DATA}`, () => {
       const expected = {
-        type: DEFAULT_ACTION,
+        type: LOAD_DATA,
       };
-      expect(defaultAction()).toEqual(expected);
+      expect(loadData()).toEqual(expected);
     });
   });
 });
