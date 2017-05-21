@@ -9,10 +9,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
-import Table from 'components/Table';
-import Select from 'components/Select';
 import TextField from 'material-ui/TextField';
 import Pagination from 'material-ui-pagination';
+import Table from 'components/Table';
+import Select from 'components/Select';
+import Loading from 'components/Loading';
+import Message from 'components/Message';
 
 import NewEntryModal from './NewEntryModal';
 import makeSelectHomePage, {
@@ -47,9 +49,22 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     this.props.openModal('newEntry');
   }
 
+  renderTable() {
+    return this.props.homePage.dataLoading ?
+      <Loading />
+      :
+      (
+        <Table
+          sortable
+          body={this.props.tableData}
+          header={tableHeaders}
+        />
+      );
+  }
+
   render() {
-    const { tableData, totalPages, cities } = this.props;
-    const { filter, searchQuery, modal, currentPage } = this.props.homePage;
+    const { totalPages, cities } = this.props;
+    const { filter, searchQuery, modal, currentPage, error, pendingNewEntry } = this.props.homePage;
 
     return (
       <div>
@@ -74,11 +89,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             primary
           />
         </Header>
-        <Table
-          sortable
-          body={tableData}
-          header={tableHeaders}
-        />
+        {
+          error ?
+            <Message error>{error}</Message>
+            :
+            this.renderTable()
+        }
         <Footer>
           {
             totalPages > 1 &&
@@ -98,6 +114,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           cities={cities}
           countries={countryFilters.slice(1)}
           onSubmit={this.props.addEntry}
+          pending={pendingNewEntry}
         />
       </div>
     );

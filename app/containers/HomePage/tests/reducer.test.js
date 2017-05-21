@@ -67,7 +67,9 @@ describe('homePageReducer', () => {
     state = state.set('data', fromJS([{ name: 'Вася' }]));
 
     const newEntry = fromJS({ name: 'Маша' });
-    const expected = state.update('data', (data) => data.unshift(newEntry));
+    const expected = state
+      .update('data', (data) => data.unshift(newEntry))
+      .set('pendingNewEntry', false);
 
     expect(homePageReducer(state, addEntrySuccess(newEntry))).toEqual(expected);
   });

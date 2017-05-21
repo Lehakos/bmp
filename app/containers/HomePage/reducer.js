@@ -13,14 +13,17 @@ import {
   SEARCH,
   OPEN_MODAL,
   CLOSE_MODAL,
+  ADD_ENTRY,
   ADD_ENTRY_SUCCESS,
+  ADD_ENTRY_FAILURE,
   CHANGE_PAGINATION,
 } from './constants';
 
 export const initialState = fromJS({
   data: [],
+  dataLoading: true,
+  pendingNewEntry: false,
   filter: 'все',
-  loading: true,
   error: null,
   searchQuery: '',
   modal: null,
@@ -33,17 +36,17 @@ function homePageReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_DATA:
       return state
-        .set('loading', true)
+        .set('dataLoading', true)
         .set('data', fromJS([]));
 
     case LOAD_DATA_SUCCESS:
       return state
-        .set('loading', false)
+        .set('dataLoading', false)
         .set('data', fromJS(payload));
 
     case LOAD_DATA_FAILURE:
       return state
-        .set('loading', false)
+        .set('dataLoading', false)
         .set('error', payload.error);
 
     case CHANGE_FILTER:
@@ -62,8 +65,16 @@ function homePageReducer(state = initialState, action) {
     case CLOSE_MODAL:
       return state.set('modal', null);
 
+    case ADD_ENTRY:
+      return state.set('pendingNewEntry', true);
+
     case ADD_ENTRY_SUCCESS:
-      return state.update('data', (data) => data.unshift(fromJS(payload)));
+      return state
+        .update('data', (data) => data.unshift(fromJS(payload)))
+        .set('pendingNewEntry', false);
+
+    case ADD_ENTRY_FAILURE:
+      return state.set('pendingNewEntry', false);
 
     case CHANGE_PAGINATION:
       return state.set('currentPage', payload.pageNum);

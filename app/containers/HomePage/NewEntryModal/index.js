@@ -12,6 +12,7 @@ const NewEntryModal = ({
   cities,
   countries,
   onSubmit,
+  pending,
 }) => (
   <Dialog
     title="Добавить новую запись"
@@ -27,6 +28,7 @@ const NewEntryModal = ({
       countries={countries}
       onSubmit={onSubmit}
       onCancel={onRequestClose}
+      pending={pending}
     />
   </Dialog>
 );
@@ -37,6 +39,7 @@ NewEntryModal.propTypes = {
   onSubmit: PropTypes.func,
   isOpen: PropTypes.bool,
   onRequestClose: PropTypes.func,
+  pending: PropTypes.bool,
 };
 
 export default NewEntryModal;

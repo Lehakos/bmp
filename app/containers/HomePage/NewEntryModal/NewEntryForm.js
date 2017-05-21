@@ -8,6 +8,7 @@ import {
   TextField,
   AutoComplete,
 } from 'components/ReduxForm';
+import Loading from 'components/Loading';
 import { required, minLength } from 'utils/validate-rules';
 
 const NewEntryForm = ({
@@ -15,6 +16,7 @@ const NewEntryForm = ({
   cities,
   countries,
   onCancel,
+  pending,
 }) => (
   <form onSubmit={handleSubmit}>
     <Group horizontal noGap>
@@ -64,18 +66,25 @@ const NewEntryForm = ({
       />
     </Group>
 
-    <Group horizontal center columnGutter="5px">
-      <RaisedButton
-        label="Отменить"
-        type="button"
-        onClick={onCancel}
-      />
-      <RaisedButton
-        label="Добавить"
-        type="submit"
-        primary
-      />
-    </Group>
+    {
+      pending ?
+        <Loading text="Пожалуйста подождите" />
+        :
+        (
+          <Group horizontal center columnGutter="5px">
+            <RaisedButton
+              label="Отменить"
+              type="button"
+              onClick={onCancel}
+            />
+            <RaisedButton
+              label="Добавить"
+              type="submit"
+              primary
+            />
+          </Group>
+        )
+    }
   </form>
 );
 
@@ -84,6 +93,7 @@ NewEntryForm.propTypes = {
   countries: PropTypes.array,
   handleSubmit: PropTypes.func,
   onCancel: PropTypes.func,
+  pending: PropTypes.bool,
 };
 
 export default reduxForm({
