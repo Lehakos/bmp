@@ -1,4 +1,6 @@
 import data from './data.json';
+
+// Задержка для имитации ожидания ответа от сервера
 const DELAY = 3000;
 
 export const loadData = () => new Promise(
