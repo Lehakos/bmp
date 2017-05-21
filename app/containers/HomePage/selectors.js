@@ -87,7 +87,6 @@ const makeSelectHomePage = () => createSelector(
 
 export default makeSelectHomePage;
 export {
-  selectHomePageDomain,
   makeCurrentPageData,
   makeTotalPages,
   makeCities,

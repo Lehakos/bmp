@@ -1,4 +1,4 @@
-import { Map, fromJS } from 'immutable';
+import { fromJS } from 'immutable';
 import homePageReducer, { initialState } from '../reducer';
 import {
   loadData,
@@ -15,7 +15,7 @@ import {
 describe('homePageReducer', () => {
   let state;
   beforeEach(() => {
-    state = Map().merge(initialState);
+    state = initialState;
   });
 
   it('возвращает начальное состояние по умолчанию', () => {
